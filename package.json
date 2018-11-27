@@ -1,0 +1,27 @@
+{
+  "name": "puppeteer-google-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4",
+    "jsdom": "^13.0.0",
+    "npm": "^6.4.1",
+    "puppeteer": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/jsdom": "^12.2.0",
+    "@types/node": "^10.12.10",
+    "@types/puppeteer": "^1.10.0",
+    "prettier": "1.15.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  },
+  "author": "Alex Bogovich",
+  "license": "ISC"
+}
