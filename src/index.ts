@@ -1,14 +1,16 @@
 import puppeteer from 'puppeteer'
 import express from 'express'
 import { AddressInfo } from 'net'
+import querystring from 'querystring'
+import url from 'url'
 
 const app = express()
 
 app.get('/image', async (req, res) => {
-  const url = req.query.url
-  const index = req.query.index
+  const search = req.query.search
+  const https = req.query.https || false
 
-  if (!url) {
+  if (!search) {
     return res.send('Please provide URL as GET image list')
   }
 
@@ -16,23 +18,22 @@ app.get('/image', async (req, res) => {
     args: ['--no-sandbox'],
   })
   const page = await browser.newPage()
-  await page.goto(`https://www.google.com/search?tbm=isch&q=${url}`)
+  await page.goto(`https://www.google.com/search?tbm=isch&q=${search}`)
   const src = await page.evaluate(() => {
-    const base64: Array<any> = []
-    document.querySelectorAll('img.rg_ic.rg_i').forEach((v: any) => {
-      if (v && v.src && v.id) {
-        base64.push(v.src)
-      }
-    })
-    return base64
+    return Array.from(document.querySelectorAll('#search a'))
+      .map((link: any) => link.href)
   })
   browser.close()
 
-  if (index) {
-    res.send(JSON.stringify({ base64: src[index] }))
-  } else {
-    res.send(JSON.stringify({ base64: src }))
+  let imgs = src
+    .map((link) => querystring.parse(url.parse(link).query).imgurl)
+    .filter((img) => img)
+
+  if (https) {
+    imgs = imgs.filter((v: string) => v.indexOf('https://') === 0)
   }
+
+  res.send(JSON.stringify({ imgs: imgs }))
 })
 
 app.get('/title', async (req, res) => {
