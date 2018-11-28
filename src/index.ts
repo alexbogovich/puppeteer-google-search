@@ -7,9 +7,7 @@ import url from 'url'
 const app = express()
 
 app.get('/image', async (req, res) => {
-  const search = req.query.search
-  const https = req.query.https || false
-
+  const {search, https = false, hl = 'en'} = req.query
   if (!search) {
     return res.send('Please provide URL as GET image list')
   }
@@ -18,7 +16,7 @@ app.get('/image', async (req, res) => {
     args: ['--no-sandbox'],
   })
   const page = await browser.newPage()
-  await page.goto(`https://www.google.com/search?tbm=isch&q=${search}`)
+  await page.goto(`https://www.google.com/search?tbm=isch&q=${search}&hl=${hl}`)
   const src = await page.evaluate(() => {
     return Array.from(document.querySelectorAll('#search a'))
       .map((link: any) => link.href)
@@ -37,9 +35,9 @@ app.get('/image', async (req, res) => {
 })
 
 app.get('/title', async (req, res) => {
-  const url = req.query.url
+  const {search, hl = 'en'} = req.query
 
-  if (!url) {
+  if (!search) {
     return res.send('Please provide URL as GET image list')
   }
 
@@ -47,7 +45,7 @@ app.get('/title', async (req, res) => {
     args: ['--no-sandbox'],
   })
   const page = await browser.newPage()
-  await page.goto(`https://www.google.com/search?q=${url}`)
+  await page.goto(`https://www.google.com/search?q=${search}&hl=${hl}`)
   const title = await page.evaluate(() => {
     let text: string = undefined
     document.querySelectorAll('h3').forEach(v => {
