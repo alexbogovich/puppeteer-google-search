@@ -10,7 +10,7 @@
     "axios": "^0.18.1",
     "express": "^4.16.4",
     "jsdom": "^13.0.0",
-    "npm": "^6.4.1",
+    "npm": "^6.14.6",
     "puppeteer": "^1.10.0"
   },
   "devDependencies": {
