@@ -11,7 +11,7 @@
     "express": "^4.16.4",
     "jsdom": "^13.0.0",
     "npm": "^6.14.6",
-    "puppeteer": "^1.10.0"
+    "puppeteer": "^1.13.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
